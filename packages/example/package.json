@@ -1,11 +1,11 @@
 {
-  "name": "ui",
+  "name": "@b-gen/example",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
-  "license": "MIT",
+  "private": true,
   "dependencies": {
-    "@b-gen/client": "*"
+    "@b-gen/client": "workspace:*"
   },
   "devDependencies": {
     "@tsconfig/vite-react": "^1.0.0",

@@ -16,8 +16,12 @@
     "@graphql-codegen/typescript": "^2.4.1",
     "@graphql-codegen/typescript-graphql-request": "^4.3.2",
     "@graphql-codegen/typescript-operations": "^2.2.1",
-    "graphql-request": "^4.2.0",
     "resolve-pkg": "^2.0.0"
+  },
+  "peerDependencies": {
+    "graphql": "*",
+    "graphql-request": "*",
+    "graphql-tag": "*"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",

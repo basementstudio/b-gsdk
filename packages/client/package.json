@@ -6,9 +6,6 @@
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
-    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node16 --outdir=dist",
-    "watch": "yarn build --watch",
-    "generate": "ts-node ./src/index.ts",
     "clean": ""
   },
   "dependencies": {},
