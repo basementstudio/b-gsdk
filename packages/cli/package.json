@@ -4,9 +4,12 @@
   "description": "A GraphQL Codegen that outputs a TypeScript SDK.",
   "author": "Julian Benegas",
   "license": "MIT",
+  "main": "bin/index.js",
+  "bin": {
+    "b-gsdk": "./bin/index.js"
+  },
   "scripts": {
-    "build": "esbuild ./src/index.ts --bundle --platform=node --target=node16 --outdir=dist",
-    "watch": "yarn build --watch",
+    "build": "ncc build ./src/index.ts -o bin --minify",
     "generate": "ts-node ./src/index.ts"
   },
   "dependencies": {

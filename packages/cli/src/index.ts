@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { generate } from "@graphql-codegen/cli";
 import resolvePkg from "resolve-pkg";
 import fs from "fs";
