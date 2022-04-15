@@ -37,9 +37,9 @@ async function main() {
     },
     false
   );
-  const resolved = resolvePkg("@b-gen/client");
+  const resolved = resolvePkg("@b-gsdk/client");
   if (!resolved) {
-    console.error("Please install @b-gen/client");
+    console.error("Please install @b-gsdk/client");
     return;
   }
   fs.writeFileSync(

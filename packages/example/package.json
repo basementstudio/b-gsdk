@@ -1,11 +1,11 @@
 {
-  "name": "@b-gen/example",
+  "name": "@b-gsdk/example",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
   "private": true,
   "dependencies": {
-    "@b-gen/client": "workspace:*"
+    "@b-gsdk/client": "workspace:*"
   },
   "devDependencies": {
     "@tsconfig/vite-react": "^1.0.0",

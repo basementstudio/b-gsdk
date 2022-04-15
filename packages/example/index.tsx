@@ -1,1 +1,1 @@
-import { getSdk } from "@b-gen/client/generated";
+import { getSdk } from "@b-gsdk/client/generated";

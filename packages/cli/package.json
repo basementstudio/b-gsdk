@@ -1,5 +1,5 @@
 {
-  "name": "b-gen",
+  "name": "b-gsdk",
   "version": "0.0.1",
   "description": "A GraphQL Codegen that outputs a TypeScript SDK.",
   "author": "Julian Benegas",
