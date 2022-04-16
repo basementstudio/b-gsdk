@@ -55,7 +55,20 @@ export async function main() {
     path.join(bgsdkDirectoryPath, "generated/index.ts"),
     sdkCodegen.content
   );
-  fs.writeFileSync(path.join(bgsdkDirectoryPath, "sdk.ts"), sdkFileContents);
+  const skdFilePath = path.join(bgsdkDirectoryPath, "sdk.ts");
+  if (!fs.existsSync(skdFilePath)) {
+    fs.writeFileSync(skdFilePath, sdkFileContents);
+  }
+
+  const gitignorePath = path.join(process.cwd(), ".gitignore");
+  if (fs.existsSync(gitignorePath)) {
+    const gitignore = fs.readFileSync(gitignorePath, "utf8");
+    if (!gitignore.includes("generated")) {
+      fs.appendFileSync(gitignorePath, "\ngenerated/");
+      console.log('Added "generated/" to .gitignore');
+    }
+  }
+
   console.log("Done ✨");
 }
 
@@ -86,4 +99,9 @@ export const createBGsdk = ({ endpoint, headers }: CreateBGsdkClientParams) => {
 
   return { ...generatedSdk, rawClient: graphQLClient }
 }
+
+// You can then create the sdk with the endpoint and headers set up and export it.
+// For example like this:
+// export const bgsdk = createBGsdk({ })
+
 `;

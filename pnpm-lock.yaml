@@ -11,7 +11,6 @@ importers:
   packages/cli:
     specifiers:
       '@graphql-codegen/cli': ^2.6.2
-      '@graphql-codegen/core': ^2.5.1
       '@graphql-codegen/introspection': ^2.1.0
       '@graphql-codegen/typescript': ^2.4.1
       '@graphql-codegen/typescript-graphql-request': ^4.3.2
@@ -23,7 +22,6 @@ importers:
       typescript: ^4.6.3
     dependencies:
       '@graphql-codegen/cli': 2.6.2_4cd88d970ed92960140a7933555051fc
-      '@graphql-codegen/core': 2.5.1_graphql@16.3.0
       '@graphql-codegen/introspection': 2.1.1_graphql@16.3.0
       '@graphql-codegen/typescript': 2.4.8_graphql@16.3.0
       '@graphql-codegen/typescript-graphql-request': 4.4.5_graphql@16.3.0
