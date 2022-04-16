@@ -1,11 +1,21 @@
-#!/usr/bin/env node
-
 import { generate } from "@graphql-codegen/cli";
 import resolvePkg from "resolve-pkg";
 import fs from "fs";
 import path from "path";
+import { getBGsdkDirectoryPath } from "./util/get-b-gsdk-directory-path";
 
-async function main() {
+export async function main() {
+  console.log("starting main");
+  const bgsdkDirectoryPath = getBGsdkDirectoryPath(process.cwd());
+
+  console.log("got dir path:", bgsdkDirectoryPath);
+  if (!bgsdkDirectoryPath) {
+    throw new Error(
+      "Make sure you have a b-gsdk directory in the root of your project."
+    );
+  }
+
+  console.log("attempting codegen");
   const [schemaCodegen, sdkCodegen] = await generate(
     {
       schema: {
@@ -19,8 +29,8 @@ async function main() {
       generates: {
         [__dirname + "/generated/index.ts"]: {
           documents: [
-            __dirname + "/docs/**/*.{gql,graphql}",
-            __dirname + "/docs/*.{gql,graphql}",
+            bgsdkDirectoryPath + "/**/*.{gql,graphql}",
+            bgsdkDirectoryPath + "/*.{gql,graphql}",
           ],
           plugins: [
             "typescript",
@@ -39,10 +49,11 @@ async function main() {
     },
     false
   );
+  console.log("ok COOl, i got it:", sdkCodegen);
+  console.log("attempting to write to file");
   const resolved = resolvePkg("@b-gsdk/client");
   if (!resolved) {
-    console.error("Please install @b-gsdk/client");
-    return;
+    throw new Error("Please install @b-gsdk/client");
   }
   fs.writeFileSync(
     path.join(resolved, "generated/graphql.schema.json"),
@@ -54,5 +65,3 @@ async function main() {
   );
   console.log("done");
 }
-
-main();
