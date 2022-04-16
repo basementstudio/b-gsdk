@@ -1,21 +1,17 @@
 import { generate } from "@graphql-codegen/cli";
-import resolvePkg from "resolve-pkg";
 import fs from "fs";
 import path from "path";
 import { getBGsdkDirectoryPath } from "./util/get-b-gsdk-directory-path";
 
 export async function main() {
-  console.log("starting main");
   const bgsdkDirectoryPath = getBGsdkDirectoryPath(process.cwd());
 
-  console.log("got dir path:", bgsdkDirectoryPath);
   if (!bgsdkDirectoryPath) {
     throw new Error(
       "Make sure you have a b-gsdk directory in the root of your project."
     );
   }
 
-  console.log("attempting codegen");
   const [schemaCodegen, sdkCodegen] = await generate(
     {
       schema: {
@@ -49,19 +45,45 @@ export async function main() {
     },
     false
   );
-  console.log("ok COOl, i got it:", sdkCodegen);
-  console.log("attempting to write to file");
-  const resolved = resolvePkg("@b-gsdk/client");
-  if (!resolved) {
-    throw new Error("Please install @b-gsdk/client");
-  }
+
+  createDirIfDoesNotExist(`${bgsdkDirectoryPath}/generated`);
   fs.writeFileSync(
-    path.join(resolved, "generated/graphql.schema.json"),
+    path.join(bgsdkDirectoryPath, "generated/graphql.schema.json"),
     schemaCodegen.content
   );
   fs.writeFileSync(
-    path.join(resolved, "generated/index.ts"),
+    path.join(bgsdkDirectoryPath, "generated/index.ts"),
     sdkCodegen.content
   );
-  console.log("done");
+  fs.writeFileSync(path.join(bgsdkDirectoryPath, "sdk.ts"), sdkFileContents);
+  console.log("Done ✨");
 }
+
+function createDirIfDoesNotExist(p: string) {
+  if (!fs.existsSync(p)) {
+    fs.mkdirSync(p);
+  }
+}
+
+const sdkFileContents = `import { GraphQLClient } from 'graphql-request'
+import { getSdk } from './generated'
+
+export type CreateBGsdkClientParams = {
+  endpoint: string
+  headers?: string[][] | Record<string, string> | Headers
+}
+
+export const createBGsdk = ({ endpoint, headers }: CreateBGsdkClientParams) => {
+  const graphQLClient = new GraphQLClient(endpoint, {
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...headers
+    }
+  })
+
+  const generatedSdk = getSdk(graphQLClient)
+
+  return { ...generatedSdk, rawClient: graphQLClient }
+}
+`;
