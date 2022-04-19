@@ -1,10 +1,15 @@
 import { generate } from "@graphql-codegen/cli";
 import fs from "fs";
 import path from "path";
+import { Args } from "./bin";
+import { getBGsdkConfig } from "./util/get-b-gsdk-config";
 import { getBGsdkDirectoryPath } from "./util/get-b-gsdk-directory-path";
 
-export async function main() {
-  const bgsdkDirectoryPath = getBGsdkDirectoryPath(process.cwd());
+export async function main(args: Args) {
+  const bgsdkDirectoryPath = getBGsdkDirectoryPath(
+    process.cwd(),
+    args["--dir"]
+  );
 
   if (!bgsdkDirectoryPath) {
     throw new Error(
@@ -12,14 +17,13 @@ export async function main() {
     );
   }
 
+  const config = getBGsdkConfig(bgsdkDirectoryPath);
+
   const [schemaCodegen, sdkCodegen] = await generate(
     {
       schema: {
-        "https://mr-beast-2.myshopify.com/api/2021-10/graphql": {
-          headers: {
-            "x-shopify-storefront-access-token":
-              "374a3639228aeb7798d99d88002c4b2e",
-          },
+        [config.schemaURL]: {
+          headers: config.headers,
         },
       },
       generates: {
