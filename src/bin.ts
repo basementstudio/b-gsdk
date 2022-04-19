@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require("dotenv").config();
 import { main } from ".";
 import { formatError } from "./util/format-error";
 import arg from "arg";
@@ -28,14 +29,23 @@ const args = arg(
 );
 
 // CLI commands
-const cmds: { [key: string]: (args: Args) => void } = {
+const cmds: { [key: string]: (args: Args) => Promise<void> } = {
   generate: main,
 };
 
 // Run CLI
 try {
   // Run command or show usage for unknown command
-  cmds[cmd] ? cmds[cmd](args) : help(0);
+  cmds[cmd]
+    ? cmds[cmd](args)
+        .then(() => {
+          process.exit(0);
+        })
+        .catch((error) => {
+          console.error(formatError(error));
+          process.exit(1);
+        })
+    : help(0);
 } catch (e) {
   console.error(formatError(e).message);
   process.exit(1);

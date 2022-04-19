@@ -22,7 +22,7 @@ export async function main(args: Args) {
   const [schemaCodegen, sdkCodegen] = await generate(
     {
       schema: {
-        [config.schemaURL]: {
+        [config.endpoint]: {
           headers: config.headers,
         },
       },
