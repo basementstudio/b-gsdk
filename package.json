@@ -1,6 +1,6 @@
 {
   "name": "b-gsdk",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A GraphQL Codegen that outputs a TypeScript SDK.",
   "author": "Julian Benegas",
   "license": "MIT",
@@ -11,7 +11,8 @@
   "types": "src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "publish": "npm publish"
   },
   "dependencies": {
     "@graphql-codegen/cli": "^2.6.2",
