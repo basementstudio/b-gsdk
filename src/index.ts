@@ -57,20 +57,11 @@ export async function main(args: Args) {
   );
   fs.writeFileSync(
     path.join(bgsdkDirectoryPath, "generated/index.ts"),
-    sdkCodegen.content
+    "/* eslint-disable */\n" + sdkCodegen.content + "\n" + extraGenerated
   );
   const skdFilePath = path.join(bgsdkDirectoryPath, "sdk.ts");
   if (!fs.existsSync(skdFilePath)) {
     fs.writeFileSync(skdFilePath, sdkFileContents);
-  }
-
-  const gitignorePath = path.join(process.cwd(), ".gitignore");
-  if (fs.existsSync(gitignorePath)) {
-    const gitignore = fs.readFileSync(gitignorePath, "utf8");
-    if (!gitignore.includes("generated")) {
-      fs.appendFileSync(gitignorePath, "\ngenerated/");
-      console.log('Added "generated/" to .gitignore');
-    }
   }
 
   console.log("Done ✨");
@@ -82,15 +73,15 @@ function createDirIfDoesNotExist(p: string) {
   }
 }
 
-const sdkFileContents = `import { GraphQLClient } from 'graphql-request'
-import { getSdk } from './generated'
-
-export type CreateBGsdkClientParams = {
+const extraGenerated = `export type CreateBgSdkParams = {
   endpoint: string
   headers?: string[][] | Record<string, string> | Headers
 }
 
-export const createBGsdk = ({ endpoint, headers }: CreateBGsdkClientParams) => {
+export const createBgSdk = ({
+  endpoint,
+  headers
+}: CreateBgSdkParams) => {
   const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
       accept: 'application/json',
@@ -101,11 +92,13 @@ export const createBGsdk = ({ endpoint, headers }: CreateBGsdkClientParams) => {
 
   const generatedSdk = getSdk(graphQLClient)
 
-  return { ...generatedSdk, rawClient: graphQLClient }
+  return { ...generatedSdk, client: graphQLClient }
 }
+`;
 
-// You can then create the sdk with the endpoint and headers set up and export it.
-// For example like this:
-// export const bgsdk = createBGsdk({ })
+const sdkFileContents = `import config from './config'
+import { createBgSdk } from './generated'
+
+export const bgSdk = createBgSdk(config)
 
 `;
