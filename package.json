@@ -1,11 +1,13 @@
 {
   "name": "b-gsdk",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A GraphQL Codegen that outputs a TypeScript SDK.",
   "author": "Julian Benegas",
   "license": "MIT",
   "main": "dist/index.js",
-  "bin": "dist/bin.js",
+  "bin": {
+    "b-gsdk": "dist/bin.js"
+  },
   "types": "src/index.d.ts",
   "scripts": {
     "build": "tsc",
