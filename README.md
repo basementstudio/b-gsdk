@@ -2,8 +2,13 @@
 
 A GraphQL Codegen that outputs a TypeScript SDK.
 
+## Install
 
-### Usage
+```zsh
+yarn add b-gsdk --dev
+```
+
+## Usage
 
 1. Create `./b-gsdk/config.js`:
 
